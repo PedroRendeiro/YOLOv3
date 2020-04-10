@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Run a YOLOv3/YOLOv2 style detection model on test images.
@@ -9,7 +9,10 @@ import os, sys, argparse
 import cv2
 import time
 from timeit import default_timer as timer
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 import tensorflow as tf
+
 import numpy as np
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model, load_model
