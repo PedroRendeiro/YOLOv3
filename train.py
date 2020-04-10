@@ -5,6 +5,10 @@ Retrain the YOLO model for your own dataset.
 """
 import os, time, random, argparse
 import numpy as np
+
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+#os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import tensorflow.keras.backend as K
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.callbacks import TensorBoard, ModelCheckpoint, ReduceLROnPlateau, LearningRateScheduler, EarlyStopping, TerminateOnNaN, LambdaCallback
@@ -24,10 +28,9 @@ os.environ['TF_AUTO_MIXED_PRECISION_GRAPH_REWRITE_IGNORE_PERFORMANCE'] = '1'
 import tensorflow as tf
 optimize_tf_gpu(tf, K)
 
-
 def main(args):
     annotation_file = args.annotation_file
-    log_dir = 'logs/000/'
+    log_dir = args.log_dir
     classes_path = args.classes_path
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
@@ -58,6 +61,7 @@ def main(args):
     terminate_on_nan = TerminateOnNaN()
 
     callbacks=[logging, checkpoint, reduce_lr, early_stopping, terminate_on_nan]
+    callbacks=[]
 
     # get train&val dataset
     dataset = get_dataset(annotation_file)
@@ -128,7 +132,7 @@ def main(args):
     epochs = initial_epoch + args.transfer_epoch
     print("Transfer training stage")
     print('Train on {} samples, val on {} samples, with batch size {}, input_shape {}.'.format(num_train, num_val, args.batch_size, input_shape))
-    model.fit_generator(data_generator(dataset[:num_train], args.batch_size, input_shape, anchors, num_classes),
+    model.fit(data_generator(dataset[:num_train], args.batch_size, input_shape, anchors, num_classes),
             steps_per_epoch=max(1, num_train//args.batch_size),
             validation_data=data_generator(dataset[num_train:], args.batch_size, input_shape, anchors, num_classes),
             validation_steps=max(1, num_val//args.batch_size),
@@ -164,7 +168,7 @@ def main(args):
         rescale_interval = -1  #Doesn't rescale
 
     print('Train on {} samples, val on {} samples, with batch size {}, input_shape {}.'.format(num_train, num_val, args.batch_size, input_shape))
-    model.fit_generator(data_generator(dataset[:num_train], args.batch_size, input_shape, anchors, num_classes, rescale_interval),
+    model.fit(data_generator(dataset[:num_train], args.batch_size, input_shape, anchors, num_classes, rescale_interval),
         steps_per_epoch=max(1, num_train//args.batch_size),
         validation_data=data_generator(dataset[num_train:], args.batch_size, input_shape, anchors, num_classes),
         validation_steps=max(1, num_val//args.batch_size),
@@ -247,6 +251,10 @@ if __name__ == '__main__':
         help = "Number of iteration(epochs) interval to do evaluation, default=10")
     parser.add_argument('--save_eval_checkpoint', default=False, action="store_true",
         help='Whether to save checkpoint with best evaluation result')
+
+    # Log location
+    parser.add_argument('--log_dir', type=str, required=False, default=os.path.join('logs','000'),
+        help='path to anchor definitions, default=logs/000')
 
     args = parser.parse_args()
     height, width = args.model_image_size.split('x')
