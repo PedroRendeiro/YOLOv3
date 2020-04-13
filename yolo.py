@@ -292,7 +292,7 @@ def detect_video(yolo, video_path, output_path=""):
         out = cv2.VideoWriter(output_path, video_FourCC, (5. if video_path == '0' else video_fps), video_size)
     accum_time = 0
     curr_fps = 0
-    fps = "FPS: ??"
+    fps = "FPS: ??\nTIME: ??"
     prev_time = timer()
     while True:
         try:            
@@ -307,18 +307,18 @@ def detect_video(yolo, video_path, output_path=""):
             curr_fps = curr_fps + 1
             if accum_time > 1:
                 accum_time = accum_time - 1
-                fps = "FPS: " + str(curr_fps)
+                fps = "FPS: " + str(curr_fps) + "\nTIME: " + str(exec_time)
                 curr_fps = 0
             cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=0.50, color=(255, 0, 0), thickness=2)
             cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-            cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WND_PROP_FULLSCREEN)
+            cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_GUI_EXPANDED)
             cv2.imshow("result", result)
             if isOutput:
                 out.write(result)
             if (cv2.waitKey(1) & 0xFF == ord('q')) | (cv2.getWindowProperty("result", cv2.WND_PROP_VISIBLE) < 1):
                 break
-        except OSError:
+        except AttributeError:
             vid.release()
             vid = cv2.VideoCapture(0 if video_path == '0' else video_path)
             if not vid.isOpened():
