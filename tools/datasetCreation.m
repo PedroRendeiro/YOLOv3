@@ -4,7 +4,7 @@ clc
 
 global next
 
-files = [dir('../data/EMSfIIoT/')];
+files = [dir('../data/EMSfIIoT/new')];
 [m,~] = size(files);
 idx = randperm(m);
 files(idx,1) = files(:,1);
@@ -24,7 +24,7 @@ c.String = 'Go Back';
 c.Callback = @plotButtonPushed;
 
 k = 1;
-fileID = fopen('textfile.txt', 'a');
+fileID = fopen('../data/EMSfIIoT/new/textfile.txt', 'a');
 while k <= m
     next = true;
     fileDir = strcat(files(k).folder, '\', files(k).name);
@@ -57,7 +57,7 @@ while k <= m
                 top = round(roi.Position(2));
                 width = round(roi.Position(3));
                 height = round(roi.Position(4));
-                text(left, top-height/2, number, 'Color', 'Red', 'FontSize', 18)
+                text(left+width/2, top-height/2, number, 'Color', 'Red', 'FontSize', 18)
 
                 number = str2double(number);
                 

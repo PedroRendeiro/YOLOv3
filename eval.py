@@ -10,6 +10,8 @@ import operator
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 from tensorflow.keras.models import load_model
 import tensorflow.keras.backend as K
 import tensorflow as tf

@@ -53,7 +53,7 @@ def yolo2_head(prediction, anchors, num_classes, input_dims):
     return np.concatenate([box_xy, box_wh, objectness, class_scores], axis=2)
 
 
-def yolo2_postprocess_np(yolo_outputs, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=0.1, iou_threshold=0.4):
+def yolo2_postprocess_np(yolo_outputs, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=0.5, iou_threshold=0.1):
     predictions = yolo2_head(yolo_outputs, anchors, num_classes, input_dims=model_image_size)
 
     boxes, classes, scores = yolo3_handle_predictions(predictions,

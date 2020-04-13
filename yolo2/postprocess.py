@@ -134,8 +134,8 @@ def batched_yolo2_postprocess(args,
               anchors,
               num_classes,
               max_boxes=20,
-              confidence=0.1,
-              iou_threshold=0.4):
+              confidence=0.5,
+              iou_threshold=0.1):
     """Postprocess for YOLOv2 model on given input and return filtered boxes."""
     yolo_outputs = args[0]
     image_shape = args[1]

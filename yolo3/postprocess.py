@@ -91,8 +91,8 @@ def yolo3_postprocess(args,
               anchors,
               num_classes,
               max_boxes=20,
-              confidence=0.1,
-              iou_threshold=0.4):
+              confidence=0.5,
+              iou_threshold=0.1):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
 
     num_layers = len(anchors)//3 # default setting
@@ -157,8 +157,8 @@ def batched_yolo3_postprocess(args,
               anchors,
               num_classes,
               max_boxes=20,
-              confidence=0.1,
-              iou_threshold=0.4):
+              confidence=0.5,
+              iou_threshold=0.1):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
 
     num_layers = len(anchors)//3 # default setting
@@ -228,8 +228,8 @@ def batched_yolo3_prenms(args,
               num_classes,
               input_shape,
               max_boxes=20,
-              confidence=0.1,
-              iou_threshold=0.4):
+              confidence=0.5,
+              iou_threshold=0.1):
     """Postprocess part for YOLOv3 model except NMS."""
 
     num_layers = len(anchors)//3 # default setting
