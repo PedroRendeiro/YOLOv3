@@ -320,6 +320,8 @@ def detect_video(yolo, video_path, output_path=""):
         except:
             vid.release()
             vid = cv2.VideoCapture(0 if video_path == '0' else video_path)
+            if not vid.isOpened():
+                raise IOError("Couldn't open webcam or video")
             continue
     # Release everything if job is finished
     vid.release()
