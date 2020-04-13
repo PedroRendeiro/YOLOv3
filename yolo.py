@@ -294,8 +294,8 @@ def detect_video(yolo, video_path, output_path=""):
     curr_fps = 0
     fps = "FPS: ??"
     prev_time = timer()
-    try:        
-        while True:
+    while True:
+        try:
             return_value, frame = vid.read()
             image = Image.fromarray(frame)
             image = yolo.detect_image(image)
@@ -317,8 +317,10 @@ def detect_video(yolo, video_path, output_path=""):
                 out.write(result)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-    except:
-        continue
+        except:
+            vid.release()
+            vid = cv2.VideoCapture(0 if video_path == '0' else video_path)
+            continue
     # Release everything if job is finished
     vid.release()
     if isOutput:
