@@ -295,7 +295,7 @@ def detect_video(yolo, video_path, output_path=""):
     fps = "FPS: ??"
     prev_time = timer()
     while True:
-        try:
+        try:            
             return_value, frame = vid.read()
             image = Image.fromarray(frame)
             image = yolo.detect_image(image)
@@ -312,12 +312,13 @@ def detect_video(yolo, video_path, output_path=""):
             cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=0.50, color=(255, 0, 0), thickness=2)
             cv2.namedWindow("result", cv2.WINDOW_NORMAL)
+            cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_GUI_EXPANDED)
             cv2.imshow("result", result)
             if isOutput:
                 out.write(result)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if (cv2.waitKey(1) & 0xFF == ord('q')) | (cv2.getWindowProperty("result", cv2.WND_PROP_VISIBLE) < 1):
                 break
-        except:
+        except OSError:
             vid.release()
             vid = cv2.VideoCapture(0 if video_path == '0' else video_path)
             if not vid.isOpened():
