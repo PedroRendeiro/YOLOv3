@@ -312,7 +312,7 @@ def detect_video(yolo, video_path, output_path=""):
             cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=0.50, color=(255, 0, 0), thickness=2)
             cv2.namedWindow("result", cv2.WINDOW_NORMAL)
-            cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_GUI_EXPANDED)
+            cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WND_PROP_FULLSCREEN)
             cv2.imshow("result", result)
             if isOutput:
                 out.write(result)
