@@ -307,9 +307,12 @@ def detect_video(yolo, video_path, output_path=""):
             curr_fps = curr_fps + 1
             if accum_time > 1:
                 accum_time = accum_time - 1
-                fps = "FPS: " + str(curr_fps) + "\nTIME: " + str(exec_time)
+                fps = "FPS: " + str(curr_fps)
+                time_str = "TIME: " + "{:.2f}".format(exec_time)
                 curr_fps = 0
             cv2.putText(result, text=fps, org=(3, 15), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=0.50, color=(255, 0, 0), thickness=2)
+            cv2.putText(result, text=time_str, org=(3, 30), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=0.50, color=(255, 0, 0), thickness=2)
             cv2.namedWindow("result", cv2.WINDOW_NORMAL)
             cv2.setWindowProperty("result", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_GUI_EXPANDED)
