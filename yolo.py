@@ -17,7 +17,10 @@ import numpy as np
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Input, Lambda
-from tensorflow_model_optimization.sparsity import keras as sparsity
+try:
+    from tensorflow_model_optimization.sparsity import keras as sparsity
+except:
+    pass
 from PIL import Image
 
 from yolo3.model import get_yolo3_model, get_yolo3_inference_model#, get_yolo3_prenms_model

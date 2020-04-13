@@ -4,8 +4,10 @@
 from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 from tensorflow.keras.optimizers.schedules import ExponentialDecay, PolynomialDecay
 from tensorflow.keras.experimental import CosineDecay
-from tensorflow_model_optimization.sparsity import keras as sparsity
-
+try:
+    from tensorflow_model_optimization.sparsity import keras as sparsity
+except:
+    pass
 
 def add_metrics(model, metric_dict):
     '''
