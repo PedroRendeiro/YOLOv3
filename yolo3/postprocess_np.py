@@ -78,7 +78,7 @@ def _yolo3_head(prediction, num_classes, anchors, input_dims):
     return np.concatenate([box_xy, box_wh, objectness, class_scores], axis=2)
 
 
-def yolo3_postprocess_np(yolo_outputs, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=0.5, iou_threshold=0.1):
+def yolo3_postprocess_np(yolo_outputs, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=0.25, iou_threshold=0.1):
     predictions = yolo3_head(yolo_outputs, anchors, num_classes, input_dims=model_image_size)
 
     boxes, classes, scores = yolo3_handle_predictions(predictions,
@@ -90,7 +90,7 @@ def yolo3_postprocess_np(yolo_outputs, image_shape, anchors, num_classes, model_
     return boxes, classes, scores
 
 
-def yolo3_handle_predictions(predictions, max_boxes=20, confidence=0.5, iou_threshold=0.1):
+def yolo3_handle_predictions(predictions, max_boxes=20, confidence=0.25, iou_threshold=0.1):
     boxes = predictions[:, :, :4]
     box_confidences = np.expand_dims(predictions[:, :, 4], -1)
     box_class_probs = predictions[:, :, 5:]
@@ -230,7 +230,7 @@ def box_diou(boxes):
     return diou
 
 
-def nms_boxes(boxes, classes, scores, iou_threshold, confidence=0.5, use_diou=False, is_soft=False, use_exp=False, sigma=0.5):
+def nms_boxes(boxes, classes, scores, iou_threshold, confidence=0.25, use_diou=False, is_soft=False, use_exp=False, sigma=0.5):
     nboxes, nclasses, nscores = [], [], []
     for c in set(classes):
         # handle data for one class

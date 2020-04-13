@@ -91,7 +91,7 @@ def yolo3_postprocess(args,
               anchors,
               num_classes,
               max_boxes=20,
-              confidence=0.5,
+              confidence=0.25,
               iou_threshold=0.1):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
 
@@ -157,7 +157,7 @@ def batched_yolo3_postprocess(args,
               anchors,
               num_classes,
               max_boxes=20,
-              confidence=0.5,
+              confidence=0.25,
               iou_threshold=0.1):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
 
@@ -228,7 +228,7 @@ def batched_yolo3_prenms(args,
               num_classes,
               input_shape,
               max_boxes=20,
-              confidence=0.5,
+              confidence=0.25,
               iou_threshold=0.1):
     """Postprocess part for YOLOv3 model except NMS."""
 

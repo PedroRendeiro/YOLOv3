@@ -183,7 +183,7 @@ def get_yolo3_train_model(model_type, anchors, num_classes, weights_path=None, f
     return model
 
 
-def get_yolo3_inference_model(model_type, anchors, num_classes, weights_path=None, input_shape=None, confidence=0.5):
+def get_yolo3_inference_model(model_type, anchors, num_classes, weights_path=None, input_shape=None, confidence=0.25):
     '''create the inference model, for YOLOv3'''
     #K.clear_session() # get a new session
     num_anchors = len(anchors)
