@@ -23,8 +23,8 @@ def yolo3_head(feats, anchors, num_classes, input_shape, calc_loss=False):
         feats, [-1, grid_shape[0], grid_shape[1], num_anchors, num_classes + 5])
 
     # Adjust preditions to each spatial grid point and anchor size.
-    box_xy = (K.sigmoid(feats[..., :2]) + grid) / K.cast(grid_shape[::-1], K.dtype(feats))
-    box_wh = K.exp(feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[::-1], K.dtype(feats))
+    box_xy = (K.sigmoid(feats[..., :2]) + grid) / K.cast(grid_shape[...,::-1], K.dtype(feats))
+    box_wh = K.exp(feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[...,::-1], K.dtype(feats))
     box_confidence = K.sigmoid(feats[..., 4:5])
     box_class_probs = K.sigmoid(feats[..., 5:])
 
@@ -90,7 +90,7 @@ def get_anchorset(anchors, num_layers, l):
 def yolo3_postprocess(args,
               anchors,
               num_classes,
-              max_boxes=100,
+              max_boxes=20,
               confidence=0.1,
               iou_threshold=0.4):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
@@ -156,7 +156,7 @@ def batched_yolo3_boxes_and_scores(feats, anchors, num_classes, input_shape, ima
 def batched_yolo3_postprocess(args,
               anchors,
               num_classes,
-              max_boxes=100,
+              max_boxes=20,
               confidence=0.1,
               iou_threshold=0.4):
     """Postprocess for YOLOv3 model on given input and return filtered boxes."""
@@ -227,7 +227,7 @@ def batched_yolo3_prenms(args,
               anchors,
               num_classes,
               input_shape,
-              max_boxes=100,
+              max_boxes=20,
               confidence=0.1,
               iou_threshold=0.4):
     """Postprocess part for YOLOv3 model except NMS."""
@@ -285,8 +285,8 @@ def batched_yolo3_prenms(args,
             feats, [-1, grid_shape[0], grid_shape[1], num_anchors, num_classes + 5])
 
         # Adjust preditions to each spatial grid point and anchor size.
-        box_xy = (K.sigmoid(reshape_feats[..., :2]) + grid) / K.cast(grid_shape[::-1], K.dtype(reshape_feats))
-        box_wh = K.exp(reshape_feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[::-1], K.dtype(reshape_feats))
+        box_xy = (K.sigmoid(reshape_feats[..., :2]) + grid) / K.cast(grid_shape[...,::-1], K.dtype(reshape_feats))
+        box_wh = K.exp(reshape_feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[...,::-1], K.dtype(reshape_feats))
         box_confidence = K.sigmoid(reshape_feats[..., 4:5])
         box_class_probs = K.sigmoid(reshape_feats[..., 5:])
 
@@ -417,8 +417,8 @@ class Yolo3PostProcessLayer(Layer):
                 feats, [-1, grid_shape[0], grid_shape[1], num_anchors, self.num_classes + 5])
 
             # Adjust preditions to each spatial grid point and anchor size.
-            box_xy = (K.sigmoid(reshape_feats[..., :2]) + grid) / K.cast(grid_shape[::-1], K.dtype(reshape_feats))
-            box_wh = K.exp(reshape_feats[..., 2:4]) * anchors_tensor / K.cast(self.input_dim[::-1], K.dtype(reshape_feats))
+            box_xy = (K.sigmoid(reshape_feats[..., :2]) + grid) / K.cast(grid_shape[...,::-1], K.dtype(reshape_feats))
+            box_wh = K.exp(reshape_feats[..., 2:4]) * anchors_tensor / K.cast(self.input_dim[...,::-1], K.dtype(reshape_feats))
             box_confidence = K.sigmoid(reshape_feats[..., 4:5])
             box_class_probs = K.sigmoid(reshape_feats[..., 5:])
 

@@ -39,7 +39,7 @@ default_config = {
         "anchors_path": 'configs/tiny_yolo3_anchors.txt',
         "classes_path": 'configs/coco_classes.txt',
         "score" : 0.1,
-        "iou" : 0.4,
+        "iou" : 0.15,
         "model_image_size" : (416, 416),
         "gpu_num" : 1,
     }
@@ -124,9 +124,9 @@ class YOLO_np(object):
         num_anchors = len(self.anchors)
         if num_anchors == 5:
             # YOLOv2 use 5 anchors
-            out_boxes, out_classes, out_scores = yolo2_postprocess_np(self.yolo_model.predict(image_data), image_shape, self.anchors, len(self.class_names), self.model_image_size, max_boxes=100)
+            out_boxes, out_classes, out_scores = yolo2_postprocess_np(self.yolo_model.predict(image_data), image_shape, self.anchors, len(self.class_names), self.model_image_size, max_boxes=20)
         else:
-            out_boxes, out_classes, out_scores = yolo3_postprocess_np(self.yolo_model.predict(image_data), image_shape, self.anchors, len(self.class_names), self.model_image_size, max_boxes=100)
+            out_boxes, out_classes, out_scores = yolo3_postprocess_np(self.yolo_model.predict(image_data), image_shape, self.anchors, len(self.class_names), self.model_image_size, max_boxes=20)
         return out_boxes, out_classes, out_scores
 
 

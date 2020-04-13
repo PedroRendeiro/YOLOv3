@@ -21,9 +21,6 @@ from common.data_utils import preprocess_image
 from common.utils import get_dataset, get_classes, get_anchors, get_colors, draw_boxes, optimize_tf_gpu, get_custom_objects
 
 
-optimize_tf_gpu(tf, K)
-
-
 def annotation_parse(annotation_lines, class_names):
     '''
     parse annotation lines to get image dict and ground truth class dict
@@ -122,9 +119,9 @@ def yolo_predict_tflite(interpreter, image, anchors, num_classes, conf_threshold
     if len(anchors) == 5:
         # YOLOv2 use 5 anchors and have only 1 prediction
         assert len(prediction) == 1, 'invalid YOLOv2 prediction number.'
-        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
     else:
-        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
 
     return pred_boxes, pred_classes, pred_scores
 
@@ -194,9 +191,9 @@ def yolo_predict_mnn(interpreter, session, image, anchors, num_classes, conf_thr
     if len(anchors) == 5:
         # YOLOv2 use 5 anchors and have only 1 prediction
         assert len(prediction) == 1, 'invalid YOLOv2 prediction number.'
-        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
     else:
-        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
 
     return pred_boxes, pred_classes, pred_scores
 
@@ -233,9 +230,9 @@ def yolo_predict_pb(model, image, anchors, num_classes, model_image_size, conf_t
     if len(anchors) == 5:
         # YOLOv2 use 5 anchors and have only 1 prediction
         assert len(prediction) == 1, 'invalid YOLOv2 prediction number.'
-        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction[0], image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
     else:
-        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
 
     return pred_boxes, pred_classes, pred_scores
 
@@ -247,9 +244,9 @@ def yolo_predict_keras(model, image, anchors, num_classes, model_image_size, con
     prediction = model.predict([image_data])
     if len(anchors) == 5:
         # YOLOv2 use 5 anchors
-        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo2_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
     else:
-        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=100, confidence=conf_threshold)
+        pred_boxes, pred_classes, pred_scores = yolo3_postprocess_np(prediction, image_shape, anchors, num_classes, model_image_size, max_boxes=20, confidence=conf_threshold)
 
     return pred_boxes, pred_classes, pred_scores
 
@@ -1182,4 +1179,6 @@ def main():
 
 
 if __name__ == '__main__':
+    optimize_tf_gpu(tf, K)
+    
     main()

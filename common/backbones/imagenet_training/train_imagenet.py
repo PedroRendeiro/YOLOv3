@@ -94,7 +94,7 @@ def train(args, model, input_shape):
         verbose=1,
         save_weights_only=False,
         save_best_only=True,
-        period=1)
+        save_freq='epoch')
     logging = TensorBoard(log_dir=log_dir, histogram_freq=0, write_graph=False, write_grads=False, write_images=False, update_freq='batch')
     terminate_on_nan = TerminateOnNaN()
     learn_rates = [0.05, 0.01, 0.005, 0.001, 0.0005]

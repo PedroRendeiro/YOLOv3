@@ -26,7 +26,6 @@ os.environ['TF_ENABLE_AUTO_MIXED_PRECISION'] = '1'
 os.environ['TF_AUTO_MIXED_PRECISION_GRAPH_REWRITE_IGNORE_PERFORMANCE'] = '1'
 
 import tensorflow as tf
-optimize_tf_gpu(tf, K)
 
 def main(args):
     annotation_file = args.annotation_file
@@ -55,13 +54,12 @@ def main(args):
         verbose=1,
         save_weights_only=False,
         save_best_only=True,
-        period=1)
+        save_freq='epoch')
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, verbose=1, cooldown=0, min_lr=1e-10)
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=50, verbose=1)
     terminate_on_nan = TerminateOnNaN()
 
     callbacks=[logging, checkpoint, reduce_lr, early_stopping, terminate_on_nan]
-    callbacks=[]
 
     # get train&val dataset
     dataset = get_dataset(annotation_file)
@@ -260,4 +258,6 @@ if __name__ == '__main__':
     height, width = args.model_image_size.split('x')
     args.model_image_size = (int(height), int(width))
 
+    optimize_tf_gpu(tf, K)
+    
     main(args)

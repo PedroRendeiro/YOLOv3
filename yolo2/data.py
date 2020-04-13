@@ -136,8 +136,8 @@ def preprocess_true_boxes(true_boxes, anchors, input_shape, num_classes):
     input_shape = np.array(input_shape, dtype='int32')
     boxes_xy = (true_boxes[..., 0:2] + true_boxes[..., 2:4]) // 2
     boxes_wh = true_boxes[..., 2:4] - true_boxes[..., 0:2]
-    true_boxes[..., 0:2] = boxes_xy/input_shape[::-1]
-    true_boxes[..., 2:4] = boxes_wh/input_shape[::-1]
+    true_boxes[..., 0:2] = boxes_xy/input_shape[...,::-1]
+    true_boxes[..., 2:4] = boxes_wh/input_shape[...,::-1]
 
     num_box_params = true_boxes.shape[1]
     y_true = np.zeros(
@@ -155,7 +155,7 @@ def preprocess_true_boxes(true_boxes, anchors, input_shape, num_classes):
         best_anchor = 0
         for k, anchor in enumerate(anchors):
             # Find IOU between box shifted to origin and anchor box.
-            box_maxes = box[2:4]*input_shape[::-1] / 2.
+            box_maxes = box[2:4]*input_shape[...,::-1] / 2.
             box_mins = -box_maxes
             anchor_maxes = (anchor / 2.)
             anchor_mins = -anchor_maxes

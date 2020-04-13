@@ -277,8 +277,8 @@ def yolo2_loss(args, anchors, num_classes, label_smoothing=0, use_crossentropy_l
     else:
         # YOLOv2 location loss for matching detection boxes.
         # Darknet trans box to calculate loss.
-        trans_true_xy = y_true[..., :2]*grid_shape[::-1] - grid
-        trans_true_wh = K.log(y_true[..., 2:4] / anchors * input_shape[::-1])
+        trans_true_xy = y_true[..., :2]*grid_shape[...,::-1] - grid
+        trans_true_wh = K.log(y_true[..., 2:4] / anchors * input_shape[...,::-1])
         trans_true_wh = K.switch(object_mask, trans_true_wh, K.zeros_like(trans_true_wh)) # avoid log(0)=-inf
         trans_true_boxes = K.concatenate([trans_true_xy, trans_true_wh])
 

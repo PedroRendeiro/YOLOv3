@@ -267,8 +267,8 @@ def yolo3_loss(args, anchors, num_classes, ignore_thresh=.5, label_smoothing=0, 
         pred_box = K.concatenate([pred_xy, pred_wh])
 
         # Darknet raw box to calculate loss.
-        raw_true_xy = y_true[l][..., :2]*grid_shapes[l][::-1] - grid
-        raw_true_wh = K.log(y_true[l][..., 2:4] / anchors[anchor_mask[l]] * input_shape[::-1])
+        raw_true_xy = y_true[l][..., :2]*grid_shapes[l][...,::-1] - grid
+        raw_true_wh = K.log(y_true[l][..., 2:4] / anchors[anchor_mask[l]] * input_shape[...,::-1])
         raw_true_wh = K.switch(object_mask, raw_true_wh, K.zeros_like(raw_true_wh)) # avoid log(0)=-inf
         box_loss_scale = 2 - y_true[l][...,2:3]*y_true[l][...,3:4]
 
